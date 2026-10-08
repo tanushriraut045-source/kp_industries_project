@@ -1,3 +1,2 @@
-# kp_industries
-
-[![Open in Bolt](https://bolt.new/static/open-in-bolt.svg)](https://bolt.new/~/sb1-h8r4gfnw)
+# kp_industries_project
+Responsive corporate landing page for KP Industries built with HTML5 and Tailwind CSS.
