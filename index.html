@@ -1,0 +1,887 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>KP Industries | Water Treatment & Industrial Solutions</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              serif: ['Playfair Display', 'Georgia', 'serif'],
+              sans: ['Inter', 'system-ui', 'sans-serif'],
+            },
+            colors: {
+              brand: {
+                50: '#f0f9ff',
+                100: '#e0f2fe',
+                200: '#bae6fd',
+                300: '#7dd3fc',
+                400: '#38bdf8',
+                500: '#0ea5e9',
+                600: '#0284c7',
+                700: '#0369a1',
+                800: '#075985',
+                900: '#0c4a6e',
+              },
+            },
+          },
+        },
+      }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body { font-family: 'Inter', sans-serif; background: #ffffff; color: #111; overflow-x: hidden; }
+
+      /* Navbar */
+      #navbar {
+        position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+        background: rgba(255,255,255,0.97);
+        backdrop-filter: blur(8px);
+        border-bottom: 1px solid #e5e7eb;
+        transition: box-shadow 0.3s;
+      }
+      #navbar.scrolled { box-shadow: 0 2px 16px rgba(0,0,0,0.08); }
+
+      /* Pill button */
+      .btn-pill {
+        display: inline-block;
+        border-radius: 9999px;
+        border: 1.5px solid #111;
+        padding: 0.5rem 1.75rem;
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #111;
+        background: transparent;
+        cursor: pointer;
+        transition: background 0.3s, color 0.3s, border-color 0.3s;
+        text-decoration: none;
+        font-family: 'Inter', sans-serif;
+      }
+      .btn-pill:hover { background: #111; color: #fff; }
+      .btn-pill-white {
+        border-color: #fff; color: #fff;
+      }
+      .btn-pill-white:hover { background: #fff; color: #111; }
+
+      /* Slider */
+      .slider-wrapper { position: relative; overflow: hidden; width: 100%; }
+      .slider-track { display: flex; transition: transform 0.7s cubic-bezier(0.77,0,0.18,1); }
+      .slide { min-width: 100%; position: relative; }
+      .slide img { width: 100%; height: 420px; object-fit: cover; display: block; }
+      @media (min-width: 768px) { .slide img { height: 560px; } }
+      @media (min-width: 1024px) { .slide img { height: 640px; } }
+      .slide-overlay {
+        position: absolute; inset: 0;
+        background: linear-gradient(to bottom, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.38) 100%);
+      }
+
+      .slider-btn {
+        position: absolute; top: 50%; transform: translateY(-50%);
+        background: rgba(255,255,255,0.18);
+        border: 1.5px solid rgba(255,255,255,0.5);
+        color: #fff;
+        width: 44px; height: 44px;
+        border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        cursor: pointer;
+        transition: background 0.2s;
+        z-index: 10;
+        backdrop-filter: blur(4px);
+      }
+      .slider-btn:hover { background: rgba(255,255,255,0.35); }
+      .slider-btn-prev { left: 16px; }
+      .slider-btn-next { right: 16px; }
+
+      .dot-nav { display: flex; gap: 8px; justify-content: center; margin-top: 14px; }
+      .dot {
+        width: 10px; height: 10px; border-radius: 50%;
+        background: #d1d5db; cursor: pointer;
+        transition: background 0.3s, transform 0.2s;
+        border: none;
+      }
+      .dot.active { background: #111; transform: scale(1.25); }
+
+      /* Service cards */
+      .service-card { background: #fff; border: 1px solid #e5e7eb; overflow: hidden; transition: box-shadow 0.3s, transform 0.3s; }
+      .service-card:hover { box-shadow: 0 12px 40px rgba(0,0,0,0.10); transform: translateY(-4px); }
+      .service-card img { width: 100%; height: 200px; object-fit: cover; display: block; transition: transform 0.4s; }
+      .service-card:hover img { transform: scale(1.04); }
+
+      /* Certificate section */
+      #cert-modal {
+        display: none; position: fixed; inset: 0; z-index: 2000;
+        background: rgba(0,0,0,0.82);
+        align-items: center; justify-content: center;
+        padding: 24px;
+      }
+      #cert-modal.open { display: flex; }
+      #cert-modal img { max-width: 90vw; max-height: 90vh; border-radius: 4px; box-shadow: 0 8px 48px rgba(0,0,0,0.5); }
+
+      /* Inquiry modal */
+      #inquiry-modal {
+        display: none; position: fixed; inset: 0; z-index: 2000;
+        background: rgba(0,0,0,0.6);
+        align-items: center; justify-content: center;
+        padding: 24px;
+      }
+      #inquiry-modal.open { display: flex; }
+
+      /* Nav mobile */
+      #mobile-menu { display: none; }
+      #mobile-menu.open { display: block; }
+
+      /* Floating chat */
+      #float-chat {
+        position: fixed; bottom: 28px; right: 28px; z-index: 900;
+        width: 52px; height: 52px;
+        background: #111;
+        border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 4px 18px rgba(0,0,0,0.22);
+        transition: transform 0.2s, box-shadow 0.2s;
+        text-decoration: none;
+      }
+      #float-chat:hover { transform: scale(1.1); box-shadow: 0 8px 28px rgba(0,0,0,0.28); }
+
+      /* Section spacing */
+      section { padding: 72px 0; }
+
+      /* Map */
+      .map-frame { width: 100%; height: 340px; border: 0; }
+      @media (min-width: 768px) { .map-frame { height: 420px; } }
+
+      /* Divider */
+      .section-divider { width: 48px; height: 2px; background: #111; margin: 0 auto 32px; }
+
+      /* Certificate fallback card */
+      .cert-card {
+        background: #fff;
+        border: 2px solid #e5e7eb;
+        border-radius: 4px;
+        max-width: 680px;
+        margin: 0 auto;
+        padding: 48px 40px;
+        text-align: center;
+        position: relative;
+      }
+      .cert-stripe {
+        height: 8px;
+        background: linear-gradient(90deg, #1d6fb8 33%, #ffffff 33%, #ffffff 66%, #c8102e 66%);
+        border-radius: 2px 2px 0 0;
+        margin-bottom: 32px;
+      }
+
+      /* WhatsApp button */
+      .btn-whatsapp {
+        display: inline-flex; align-items: center; gap: 10px;
+        background: #1a3a3a;
+        color: #fff;
+        border-radius: 9999px;
+        padding: 0.75rem 2rem;
+        font-size: 0.8rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        text-decoration: none;
+        transition: background 0.3s;
+        border: none;
+        cursor: pointer;
+      }
+      .btn-whatsapp:hover { background: #25d366; }
+
+      /* Logo star */
+      .logo-star { display: inline-block; font-size: 2rem; line-height: 1; }
+
+      /* Smooth underline nav link */
+      .nav-link {
+        position: relative;
+        font-size: 0.72rem;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: #374151;
+        text-decoration: none;
+        padding-bottom: 2px;
+        transition: color 0.2s;
+      }
+      .nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: -2px; left: 0; right: 100%;
+        height: 1.5px;
+        background: #111;
+        transition: right 0.3s;
+      }
+      .nav-link:hover { color: #111; }
+      .nav-link:hover::after { right: 0; }
+
+      /* Input style */
+      .form-input {
+        width: 100%;
+        border: 1px solid #d1d5db;
+        border-radius: 4px;
+        padding: 0.6rem 0.9rem;
+        font-size: 0.875rem;
+        font-family: 'Inter', sans-serif;
+        outline: none;
+        transition: border-color 0.2s;
+      }
+      .form-input:focus { border-color: #111; }
+
+      /* Pinwheel logo colors */
+      .star-r { color: #c8102e; }
+      .star-g { color: #228b22; }
+      .star-b { color: #1d6fb8; }
+      .star-o { color: #e8871a; }
+    </style>
+    <meta property="og:image" content="https://bolt.new/static/og_default.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://bolt.new/static/og_default.png">
+</head>
+  <body>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav id="navbar">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Desktop nav -->
+        <div class="hidden md:flex items-center justify-between h-16">
+          <div class="flex items-center gap-7">
+            <a href="#home" class="nav-link">Home</a>
+            <a href="#about" class="nav-link">About</a>
+            <a href="#services" class="nav-link">Services</a>
+            <a href="#certificate" class="nav-link">Certificate</a>
+            <a href="#contact" class="nav-link">Contact</a>
+          </div>
+          <!-- Brand center -->
+          <a href="#home" class="flex flex-col items-center gap-0.5 absolute left-1/2 -translate-x-1/2">
+            <div class="flex items-center gap-0.5 leading-none select-none" aria-hidden="true">
+              <span class="star-r text-xl font-bold">✦</span>
+              <span class="star-g text-xl font-bold">✦</span>
+              <span class="star-b text-xl font-bold">✦</span>
+              <span class="star-o text-xl font-bold">✦</span>
+            </div>
+            <span style="font-family:'Playfair Display',serif;" class="text-sm font-bold tracking-[0.2em] text-gray-900">KP INDUSTRIES</span>
+          </a>
+          <div class="flex items-center gap-3">
+            <a href="#contact" class="btn-pill" style="padding:0.4rem 1.1rem;font-size:0.65rem;">Get in Touch</a>
+            <a href="#services" class="btn-pill" style="padding:0.4rem 1.1rem;font-size:0.65rem;">Store</a>
+          </div>
+        </div>
+
+        <!-- Mobile nav -->
+        <div class="flex md:hidden items-center justify-between h-14">
+          <button id="hamburger" class="p-2 text-gray-700" aria-label="Menu">
+            <i class="fa fa-bars text-lg"></i>
+          </button>
+          <a href="#home" class="flex flex-col items-center gap-0.5">
+            <div class="flex items-center gap-0.5 leading-none">
+              <span class="star-r font-bold">✦</span>
+              <span class="star-g font-bold">✦</span>
+              <span class="star-b font-bold">✦</span>
+              <span class="star-o font-bold">✦</span>
+            </div>
+            <span style="font-family:'Playfair Display',serif;" class="text-xs font-bold tracking-[0.18em] text-gray-900">KP INDUSTRIES</span>
+          </a>
+          <a href="tel:+919999999999" class="p-2 text-gray-700"><i class="fa fa-phone text-lg"></i></a>
+        </div>
+      </div>
+
+      <!-- Mobile dropdown menu -->
+      <div id="mobile-menu" class="md:hidden border-t border-gray-100 bg-white">
+        <div class="flex flex-col px-6 py-4 gap-4">
+          <a href="#home" class="nav-link" onclick="closeMobileMenu()">Home</a>
+          <a href="#about" class="nav-link" onclick="closeMobileMenu()">About</a>
+          <a href="#services" class="nav-link" onclick="closeMobileMenu()">Services</a>
+          <a href="#certificate" class="nav-link" onclick="closeMobileMenu()">Certificate</a>
+          <a href="#contact" class="nav-link" onclick="closeMobileMenu()">Contact</a>
+          <div class="flex gap-3 pt-2">
+            <a href="#contact" class="btn-pill" style="padding:0.4rem 1.1rem;font-size:0.65rem;" onclick="closeMobileMenu()">Get in Touch</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ===== HERO SECTION WITH SLIDER ===== -->
+    <section id="home" class="pt-14 md:pt-16" style="padding-top:56px;padding-bottom:0;">
+      <div class="slider-wrapper">
+        <div class="slider-track" id="sliderTrack">
+
+          <!-- Slide 1: Industrial cutting torch -->
+          <div class="slide">
+            <img src="https://images.pexels.com/photos/17180807/pexels-photo-17180807.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+                 alt="Industrial plasma cutting torch with sparks" />
+            <div class="slide-overlay"></div>
+          </div>
+
+          <!-- Slide 2: Blue ocean wave / water -->
+          <div class="slide">
+            <img src="https://images.pexels.com/photos/32356030/pexels-photo-32356030.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+                 alt="Clear blue water splash" />
+            <div class="slide-overlay"></div>
+          </div>
+
+          <!-- Slide 3: Wastewater treatment facility -->
+          <div class="slide">
+            <img src="https://images.pexels.com/photos/27490881/pexels-photo-27490881.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+                 alt="Industrial wastewater treatment facility" />
+            <div class="slide-overlay"></div>
+          </div>
+
+        </div>
+
+        <!-- Prev / Next -->
+        <button class="slider-btn slider-btn-prev" id="prevBtn" aria-label="Previous">
+          <i class="fa fa-chevron-left text-sm"></i>
+        </button>
+        <button class="slider-btn slider-btn-next" id="nextBtn" aria-label="Next">
+          <i class="fa fa-chevron-right text-sm"></i>
+        </button>
+      </div>
+
+      <!-- Dot nav -->
+      <div class="dot-nav" id="dotNav">
+        <button class="dot active" data-index="0" aria-label="Slide 1"></button>
+        <button class="dot" data-index="1" aria-label="Slide 2"></button>
+        <button class="dot" data-index="2" aria-label="Slide 3"></button>
+      </div>
+
+      <!-- Hero text block -->
+      <div class="text-center px-4 py-10 max-w-4xl mx-auto">
+        <p class="text-xs font-semibold tracking-[0.22em] uppercase text-gray-400 mb-3">Est. 2018 — Pune, Maharashtra</p>
+        <h1 style="font-family:'Playfair Display',serif;"
+            class="text-3xl sm:text-4xl md:text-5xl font-bold tracking-wide text-gray-900 mb-5 leading-tight">
+          KP INDUSTRIES
+        </h1>
+        <p class="text-sm sm:text-base text-gray-600 leading-relaxed max-w-2xl mx-auto mb-8">
+          KP Industries deals in Material Supply, Design and Development &amp; Water, Waste Water Treatment Plant &amp; Waste Management Plant
+        </p>
+        <div class="flex flex-wrap gap-3 justify-center">
+          <a href="#contact" class="btn-pill">Get in Touch</a>
+          <a href="#services" class="btn-pill">Store</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== ABOUT US SECTION ===== -->
+    <section id="about" class="bg-gray-50">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <p class="text-xs font-semibold tracking-[0.22em] uppercase text-gray-400 text-center mb-3">Who We Are</p>
+        <h2 style="font-family:'Playfair Display',serif;"
+            class="text-2xl sm:text-3xl md:text-4xl font-bold text-center tracking-widest text-gray-900 mb-4">
+          ABOUT US
+        </h2>
+        <div class="section-divider"></div>
+
+        <!-- About banner image -->
+        <div class="overflow-hidden rounded-sm mb-10 shadow-lg">
+          <img src="https://images.pexels.com/photos/17882783/pexels-photo-17882783.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+               alt="Water flowing from industrial pipes"
+               class="w-full h-52 sm:h-64 md:h-80 object-cover" />
+        </div>
+
+        <div class="max-w-3xl mx-auto text-center">
+          <h3 style="font-family:'Playfair Display',serif;"
+              class="text-xl sm:text-2xl font-semibold text-gray-900 mb-6 tracking-wide">
+            KP INDUSTRIES
+          </h3>
+          <p class="text-sm sm:text-base text-gray-600 leading-[1.9] mb-8">
+            KP Industries was established in the year 2018, as an Industrial Material Supplier. KP Industries expands its business as a manufacturer in a waste management plant. KP Industries also provides design and development services for industries. Today KP Industries Maharashtra's one of the manufacturer for water purification products. A team of qualified professionals having sufficient product knowledge and skills manages for daily activities. We offer the world's most modern Water Purification Technologies with high quality, cost-effective &amp; economical solutions at competitive prices. Our activities include Manufacturing, Supplier &amp; Assembling of Sewage Treatment Plant, Effluent Treatment Plant, Ro systems, Rain Water Harvesting, Water Softeners, many eco-friendly products and Industrial Material suppliers.
+          </p>
+          <a href="#services" class="btn-pill">Learn More</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SERVICES SECTION ===== -->
+    <section id="services" class="bg-white">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <p class="text-xs font-semibold tracking-[0.22em] uppercase text-gray-400 text-center mb-3">What We Do</p>
+        <h2 style="font-family:'Playfair Display',serif;"
+            class="text-2xl sm:text-3xl md:text-4xl font-bold text-center tracking-widest text-gray-900 mb-4">
+          OUR SERVICES
+        </h2>
+        <div class="section-divider"></div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+          <!-- Card 1 -->
+          <div class="service-card rounded-sm">
+            <div class="overflow-hidden">
+              <img src="https://images.pexels.com/photos/35425759/pexels-photo-35425759.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+                   alt="Water and waste water treatment plant" />
+            </div>
+            <div class="p-5">
+              <h3 style="font-family:'Playfair Display',serif;"
+                  class="text-sm font-bold tracking-widest uppercase text-gray-900 mb-3 leading-snug">
+                Water and Waste Water Treatment
+              </h3>
+              <p class="text-xs text-gray-500 leading-relaxed">
+                We Provide total systematic solution for water and wastewater treatment
+              </p>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="service-card rounded-sm">
+            <div class="overflow-hidden">
+              <img src="https://images.pexels.com/photos/6615086/pexels-photo-6615086.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+                   alt="Technical engineering blueprint drawing" />
+            </div>
+            <div class="p-5">
+              <h3 style="font-family:'Playfair Display',serif;"
+                  class="text-sm font-bold tracking-widest uppercase text-gray-900 mb-3 leading-snug">
+                Design and Consultation
+              </h3>
+              <p class="text-xs text-gray-500 leading-relaxed">
+                We provide Piping design, Process design, Layout design, Fabrication Drawing, Detail engineering Service.
+              </p>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="service-card rounded-sm">
+            <div class="overflow-hidden">
+              <img src="https://images.pexels.com/photos/38575500/pexels-photo-38575500.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+                   alt="Industrial hardware tools and fasteners" />
+            </div>
+            <div class="p-5">
+              <h3 style="font-family:'Playfair Display',serif;"
+                  class="text-sm font-bold tracking-widest uppercase text-gray-900 mb-3 leading-snug">
+                Material Supplier
+              </h3>
+              <p class="text-xs text-gray-500 leading-relaxed">
+                We Provide all kinds of materials required for industries. We provide all electrical, Hydraulic, and mechanical work.
+              </p>
+            </div>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="service-card rounded-sm">
+            <div class="overflow-hidden">
+              <img src="https://images.pexels.com/photos/31336881/pexels-photo-31336881.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+                   alt="CAD model of industrial plant design" />
+            </div>
+            <div class="p-5">
+              <h3 style="font-family:'Playfair Display',serif;"
+                  class="text-sm font-bold tracking-widest uppercase text-gray-900 mb-3 leading-snug">
+                Plant Designing Services
+              </h3>
+              <p class="text-xs text-gray-500 leading-relaxed">
+                We can design and develop plants as per clients' requirements. We are proficient in Water and Wastewater Treatment Plant design, Process plant design, Piping Design, Layout Design.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CERTIFICATE SECTION ===== -->
+    <section id="certificate" class="bg-gray-50">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <p class="text-xs font-semibold tracking-[0.22em] uppercase text-gray-400 text-center mb-3">Quality Assurance</p>
+        <h2 style="font-family:'Playfair Display',serif;"
+            class="text-2xl sm:text-3xl md:text-4xl font-bold text-center tracking-widest text-gray-900 mb-4">
+          ISO CERTIFICATE
+        </h2>
+        <div class="section-divider"></div>
+
+        <!-- Try real certificate image first; fallback card always shows -->
+        <div class="max-w-2xl mx-auto">
+          <!-- Attempt to load actual certificate.png -->
+          <img id="certImg"
+               src="certificate.png"
+               alt="ISO 9001:2015 Certificate – KP Industries"
+               class="w-full shadow-xl border border-gray-200 rounded-sm cursor-pointer mb-2 hidden"
+               onclick="openCertModal()" />
+
+          <!-- Structured certificate fallback (always visible unless JS hides it) -->
+          <div id="certFallback" class="cert-card cursor-pointer shadow-xl" onclick="openCertModal()">
+            <div class="cert-stripe"></div>
+
+            <!-- DBS Logo area -->
+            <div class="flex justify-center gap-3 mb-4">
+              <div class="w-14 h-14 rounded-full border-4 border-blue-800 flex items-center justify-center bg-white">
+                <span class="text-blue-800 font-bold text-xs text-center leading-tight">DBS<br/>CERT</span>
+              </div>
+            </div>
+
+            <p class="text-xs tracking-[0.18em] uppercase text-gray-400 mb-1">DBS Certifications Pvt. Ltd.</p>
+            <h3 style="font-family:'Playfair Display',serif;"
+                class="text-3xl font-bold text-gray-900 tracking-widest mb-2">CERTIFICATE</h3>
+            <div class="w-10 h-0.5 bg-gray-300 mx-auto mb-5"></div>
+
+            <p class="text-xs text-gray-500 mb-1 tracking-wide">This is to Certify that Quality Management System of</p>
+            <h4 style="font-family:'Playfair Display',serif;"
+                class="text-xl font-bold text-gray-900 mb-2">K P INDUSTRIES</h4>
+            <p class="text-xs text-gray-500 leading-relaxed mb-5">
+              SURVEY NO.27/2, PRISHRAM NIWAS, NEAR RAM TEMPLE,<br/>
+              KATRAJ, Pune, Maharashtra, 411046
+            </p>
+
+            <div class="inline-block border-2 border-gray-900 px-6 py-2 mb-4">
+              <p class="text-xs tracking-[0.14em] uppercase text-gray-500 mb-0.5">Conforms to the standard</p>
+              <p style="font-family:'Playfair Display',serif;" class="text-2xl font-bold text-gray-900">ISO 9001:2015</p>
+            </div>
+
+            <p class="text-xs text-gray-500 leading-relaxed mb-5">
+              <span class="font-semibold text-gray-700">Scope:</span><br/>
+              INDUSTRIAL MATERIAL SUPPLIER, MANUFACTURER OF RUBBER PARTS AND FABRICATION WORK
+            </p>
+
+            <div class="grid grid-cols-2 gap-4 text-left border-t border-gray-200 pt-5 mb-5">
+              <div>
+                <p class="text-xs text-gray-400 tracking-wide uppercase mb-1">Certificate No.</p>
+                <p class="text-sm font-semibold text-gray-800">Q-219022062290</p>
+              </div>
+              <div>
+                <p class="text-xs text-gray-400 tracking-wide uppercase mb-1">Validity</p>
+                <p class="text-sm font-semibold text-gray-800">22 Jun 2022 – 22 Jun 2025</p>
+              </div>
+            </div>
+
+            <div class="flex justify-center gap-6 border-t border-gray-200 pt-5">
+              <div class="text-center">
+                <div class="w-10 h-10 rounded-full border-2 border-gray-400 flex items-center justify-center mx-auto mb-1">
+                  <i class="fa fa-check text-gray-600 text-xs"></i>
+                </div>
+                <p class="text-xs text-gray-400">IAS Accredited</p>
+              </div>
+              <div class="text-center">
+                <div class="w-10 h-10 rounded-full border-2 border-gray-400 flex items-center justify-center mx-auto mb-1">
+                  <i class="fa fa-globe text-gray-600 text-xs"></i>
+                </div>
+                <p class="text-xs text-gray-400">IAF Member</p>
+              </div>
+              <div class="text-center">
+                <div class="w-10 h-10 rounded-full border-2 border-gray-400 flex items-center justify-center mx-auto mb-1">
+                  <i class="fa fa-certificate text-gray-600 text-xs"></i>
+                </div>
+                <p class="text-xs text-gray-400">DBS Certifications</p>
+              </div>
+            </div>
+
+            <p class="text-xs text-gray-400 mt-6 italic">Click to view full certificate</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Certificate Lightbox Modal -->
+    <div id="cert-modal" role="dialog" aria-modal="true" aria-label="Certificate preview" onclick="closeCertModal()">
+      <img src="certificate.png" alt="ISO 9001:2015 Certificate" id="certModalImg" />
+      <button onclick="closeCertModal()"
+              style="position:absolute;top:20px;right:24px;background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.4);border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;">
+        <i class="fa fa-times"></i>
+      </button>
+    </div>
+
+    <!-- ===== MAP SECTION ===== -->
+    <section id="location" class="bg-white" style="padding-bottom:0;">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-8">
+        <p class="text-xs font-semibold tracking-[0.22em] uppercase text-gray-400 mb-3">Find Us</p>
+        <h2 style="font-family:'Playfair Display',serif;"
+            class="text-2xl sm:text-3xl md:text-4xl font-bold tracking-widest text-gray-900 mb-4">
+          OUR LOCATION
+        </h2>
+        <div class="section-divider"></div>
+        <a href="https://maps.google.com/?q=KP+Industries+Shindevadi+Pune"
+           target="_blank" rel="noopener noreferrer"
+           class="btn-pill mb-8 inline-block">
+          Get Directions
+        </a>
+      </div>
+      <div class="w-full">
+        <iframe
+          class="map-frame"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3784.4!2d73.8567!3d18.4088!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2eb57af5be5a5%3A0x1234567890abcdef!2sShindevadi%2C%20Maharashtra%20412205!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="KP Industries location map">
+        </iframe>
+      </div>
+    </section>
+
+    <!-- ===== CONTACT SECTION ===== -->
+    <section id="contact" class="bg-gray-50">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <p class="text-xs font-semibold tracking-[0.22em] uppercase text-gray-400 text-center mb-3">Reach Out</p>
+        <h2 style="font-family:'Playfair Display',serif;"
+            class="text-2xl sm:text-3xl md:text-4xl font-bold text-center tracking-widest text-gray-900 mb-4">
+          CONTACT US
+        </h2>
+        <div class="section-divider"></div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-16">
+
+          <!-- Left: Info -->
+          <div>
+            <h3 style="font-family:'Playfair Display',serif;"
+                class="text-lg font-semibold text-gray-900 mb-6 tracking-wide">
+              KP INDUSTRIES, PUNE
+            </h3>
+
+            <div class="mb-6">
+              <div class="flex items-start gap-3 mb-1">
+                <i class="fa fa-building text-gray-400 mt-0.5 text-sm"></i>
+                <div>
+                  <p class="text-xs font-bold tracking-widest uppercase text-gray-400 mb-1">Office</p>
+                  <p class="text-sm text-gray-700 leading-relaxed">
+                    KP Industries, Pune, nr. Ram Mandir, Ambegaon Pathar, Suvarnayug Nagar, Pune, Maharashtra, India
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-8">
+              <div class="flex items-start gap-3 mb-1">
+                <i class="fa fa-industry text-gray-400 mt-0.5 text-sm"></i>
+                <div>
+                  <p class="text-xs font-bold tracking-widest uppercase text-gray-400 mb-1">Workshop</p>
+                  <p class="text-sm text-gray-700 leading-relaxed">
+                    KP Industries, Pune, Shop No. 2, Near, Pune – Satara Rd, opposite to Mikro, Shindevadi, Maharashtra 412205
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-3">
+              <a href="https://wa.me/919999999999"
+                 target="_blank" rel="noopener noreferrer"
+                 class="btn-whatsapp">
+                <i class="fab fa-whatsapp text-lg text-green-400"></i>
+                Message us on WhatsApp
+              </a>
+            </div>
+          </div>
+
+          <!-- Right: Quick inquiry -->
+          <div>
+            <h3 style="font-family:'Playfair Display',serif;"
+                class="text-lg font-semibold text-gray-900 mb-6 tracking-wide">
+              Send an Enquiry
+            </h3>
+            <form id="contactForm" onsubmit="submitContactForm(event)" class="flex flex-col gap-4">
+              <div>
+                <label class="text-xs font-semibold tracking-widest uppercase text-gray-400 block mb-1.5">Name</label>
+                <input type="text" class="form-input" placeholder="Your full name" required />
+              </div>
+              <div>
+                <label class="text-xs font-semibold tracking-widest uppercase text-gray-400 block mb-1.5">Email</label>
+                <input type="email" class="form-input" placeholder="you@example.com" required />
+              </div>
+              <div>
+                <label class="text-xs font-semibold tracking-widest uppercase text-gray-400 block mb-1.5">Contact No.</label>
+                <input type="tel" class="form-input" placeholder="+91 XXXXX XXXXX" required />
+              </div>
+              <div>
+                <label class="text-xs font-semibold tracking-widest uppercase text-gray-400 block mb-1.5">Message</label>
+                <textarea class="form-input" rows="3" placeholder="How can we help you?"></textarea>
+              </div>
+              <div class="flex gap-3 pt-1">
+                <button type="submit" class="btn-pill">Send</button>
+              </div>
+            </form>
+            <div id="formSuccess" class="hidden mt-4 text-sm text-green-700 font-medium">
+              Thank you! We'll get back to you shortly.
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="bg-gray-900 text-gray-400 py-8">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+          <div class="flex items-center gap-2">
+            <span class="star-r font-bold text-sm">✦</span>
+            <span class="star-g font-bold text-sm">✦</span>
+            <span class="star-b font-bold text-sm">✦</span>
+            <span class="star-o font-bold text-sm">✦</span>
+            <span style="font-family:'Playfair Display',serif;" class="text-white font-semibold tracking-widest text-sm ml-1">KP INDUSTRIES</span>
+          </div>
+          <div class="text-center">
+            <p class="text-xs tracking-widest uppercase">COPYRIGHT &copy; 2022 KPGL – ALL RIGHTS RESERVED</p>
+          </div>
+          <div>
+            <p class="text-xs tracking-widest uppercase">POWERED BY GODADDY</p>
+          </div>
+        </div>
+
+        <!-- Footer nav -->
+        <div class="flex flex-wrap justify-center gap-6 mt-6 border-t border-gray-800 pt-6">
+          <a href="#home" class="text-xs tracking-widest uppercase text-gray-500 hover:text-white transition-colors">Home</a>
+          <a href="#about" class="text-xs tracking-widest uppercase text-gray-500 hover:text-white transition-colors">About</a>
+          <a href="#services" class="text-xs tracking-widest uppercase text-gray-500 hover:text-white transition-colors">Services</a>
+          <a href="#certificate" class="text-xs tracking-widest uppercase text-gray-500 hover:text-white transition-colors">Certificate</a>
+          <a href="#contact" class="text-xs tracking-widest uppercase text-gray-500 hover:text-white transition-colors">Contact</a>
+        </div>
+      </div>
+    </footer>
+
+    <!-- ===== FLOATING CHAT BUTTON ===== -->
+    <a id="float-chat" href="https://wa.me/919999999999" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp">
+      <i class="fab fa-whatsapp text-white text-xl"></i>
+    </a>
+
+    <!-- ===== INQUIRY MODAL (triggered by GET IN button) ===== -->
+    <div id="inquiry-modal" role="dialog" aria-modal="true" aria-label="Inquiry form">
+      <div class="bg-white rounded-sm shadow-2xl w-full max-w-md mx-auto p-8 relative" onclick="event.stopPropagation()">
+        <button onclick="closeInquiryModal()"
+                class="absolute top-4 right-4 text-gray-400 hover:text-gray-700 transition-colors">
+          <i class="fa fa-times text-lg"></i>
+        </button>
+        <h3 style="font-family:'Playfair Display',serif;"
+            class="text-xl font-bold text-gray-900 mb-1 tracking-wide">Get in Touch</h3>
+        <p class="text-xs text-gray-400 tracking-wide mb-6">KP Industries, Pune</p>
+        <form onsubmit="submitInquiry(event)" class="flex flex-col gap-4">
+          <div>
+            <label class="text-xs font-semibold tracking-widest uppercase text-gray-400 block mb-1.5">Name</label>
+            <input type="text" class="form-input" placeholder="Your full name" required />
+          </div>
+          <div>
+            <label class="text-xs font-semibold tracking-widest uppercase text-gray-400 block mb-1.5">Email</label>
+            <input type="email" class="form-input" placeholder="you@example.com" required />
+          </div>
+          <div>
+            <label class="text-xs font-semibold tracking-widest uppercase text-gray-400 block mb-1.5">Contact No.</label>
+            <input type="tel" class="form-input" placeholder="+91 XXXXX XXXXX" required />
+          </div>
+          <div class="flex gap-3 pt-1">
+            <button type="submit" class="btn-pill">Send</button>
+            <button type="button" class="btn-pill" onclick="closeInquiryModal()">Cancel</button>
+          </div>
+        </form>
+        <div id="inquirySuccess" class="hidden mt-4 text-sm text-green-700 font-medium">
+          Thank you! We'll get back to you shortly.
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // ===== NAVBAR SCROLL =====
+      window.addEventListener('scroll', () => {
+        const nav = document.getElementById('navbar');
+        nav.classList.toggle('scrolled', window.scrollY > 20);
+      });
+
+      // ===== HAMBURGER MENU =====
+      document.getElementById('hamburger').addEventListener('click', () => {
+        document.getElementById('mobile-menu').classList.toggle('open');
+      });
+      function closeMobileMenu() {
+        document.getElementById('mobile-menu').classList.remove('open');
+      }
+
+      // ===== IMAGE SLIDER =====
+      let currentSlide = 0;
+      const totalSlides = 3;
+      const track = document.getElementById('sliderTrack');
+      const dots = document.querySelectorAll('.dot');
+      let autoplayTimer;
+
+      function goToSlide(n) {
+        currentSlide = (n + totalSlides) % totalSlides;
+        track.style.transform = `translateX(-${currentSlide * 100}%)`;
+        dots.forEach((d, i) => d.classList.toggle('active', i === currentSlide));
+      }
+
+      function startAutoplay() {
+        clearInterval(autoplayTimer);
+        autoplayTimer = setInterval(() => goToSlide(currentSlide + 1), 5000);
+      }
+
+      document.getElementById('prevBtn').addEventListener('click', () => {
+        goToSlide(currentSlide - 1);
+        startAutoplay();
+      });
+      document.getElementById('nextBtn').addEventListener('click', () => {
+        goToSlide(currentSlide + 1);
+        startAutoplay();
+      });
+      dots.forEach(dot => {
+        dot.addEventListener('click', () => {
+          goToSlide(parseInt(dot.dataset.index));
+          startAutoplay();
+        });
+      });
+
+      // Pause on hover
+      track.parentElement.addEventListener('mouseenter', () => clearInterval(autoplayTimer));
+      track.parentElement.addEventListener('mouseleave', startAutoplay);
+
+      startAutoplay();
+
+      // ===== CERTIFICATE IMAGE FALLBACK =====
+      const certImg = document.getElementById('certImg');
+      const certFallback = document.getElementById('certFallback');
+      const certModalImg = document.getElementById('certModalImg');
+
+      certImg.addEventListener('load', () => {
+        certImg.classList.remove('hidden');
+        certFallback.classList.add('hidden');
+      });
+      certImg.addEventListener('error', () => {
+        certImg.classList.add('hidden');
+        certFallback.classList.remove('hidden');
+        certModalImg.src = '';
+        certModalImg.style.display = 'none';
+      });
+
+      // ===== CERTIFICATE MODAL =====
+      function openCertModal() {
+        document.getElementById('cert-modal').classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
+      function closeCertModal() {
+        document.getElementById('cert-modal').classList.remove('open');
+        document.body.style.overflow = '';
+      }
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          closeCertModal();
+          closeInquiryModal();
+        }
+      });
+
+      // ===== INQUIRY MODAL =====
+      function openInquiryModal() {
+        document.getElementById('inquiry-modal').classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
+      function closeInquiryModal() {
+        document.getElementById('inquiry-modal').classList.remove('open');
+        document.body.style.overflow = '';
+      }
+      document.getElementById('inquiry-modal').addEventListener('click', closeInquiryModal);
+
+      function submitInquiry(e) {
+        e.preventDefault();
+        document.getElementById('inquirySuccess').classList.remove('hidden');
+        e.target.reset();
+        setTimeout(closeInquiryModal, 2000);
+      }
+
+      // ===== CONTACT FORM =====
+      function submitContactForm(e) {
+        e.preventDefault();
+        document.getElementById('formSuccess').classList.remove('hidden');
+        e.target.reset();
+      }
+    </script>
+  </body>
+</html>
