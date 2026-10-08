@@ -17,7 +17,7 @@ Live Website Demo: [Click Here to View Live](https://tanushriraut045-source.gith
 5.Location & Contact Integration: Embedded Google Maps navigation and direct WhatsApp click-to-chat action.
 6.Inquiry Modal Form: Quick contact capture form for lead generation.
 
-## 🛠️ Tech Stack
+##Tech Stack
 
 1.HTML5: Semantic markup structure
 2.Tailwind CSS: Modern utility-first styling via CDN
