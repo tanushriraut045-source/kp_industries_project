@@ -28,5 +28,5 @@ A modern, pixel-perfect, and fully responsive frontend redesign for **KP Industr
 - **JavaScript (ES6):** Carousel slider logic, modals, and interactive UI handling.
 
   
-**Tanushri Raut**    
+**Tanushri Raut And Dhanshri Dhavan**    
 GitHub: [@tanushriraut045](https://github.com/tanushriraut045)
